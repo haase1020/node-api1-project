@@ -2,13 +2,31 @@ const express = require('express');
 const shortid = require('shortid');
 const server = express();
 
-let users = [];
-
 server.use(express.json());
 
-server.get('/hello', (req, res) => {
-    res.status(200).json({ hello: "Web 27" })
+let users = [];
+
+server.get('/api/user', (req, res) => {
+    res.status(200).json(users);
 });
+
+server.get(`/api/users/:id`, (req, res)=> {
+const userid =req.params;
+const userfound = users.find(user => user.id ==={userid})
+
+res.status(202).json(userfound)
+
+});
+
+server.post('/api/users', (req,res) => {
+    const userInfo = req.body;
+
+    userInfo.id = shortid.generate();
+    users.push(userInfo);
+
+    res.status(201).json(userInfo);
+    
+})
 
 const PORT = 5000;
 server.listen(PORT, () =>
